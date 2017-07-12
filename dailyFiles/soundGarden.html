@@ -1,0 +1,150 @@
+<!DOCTYPE HTML>
+<!--
+	Phantom by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Mini JS- Sound Garden</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+		<link rel="stylesheet" href="../assets/css/main.css" />
+		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+		<style>
+			/* container of all the keys*/
+			.keys{  
+				display: flex;
+				flex-direction: row;
+				flex-wrap: wrap;
+				justify-content: space-between;
+			}
+			/* individual key */
+			.key{
+				display: flex;
+			    flex-direction: column;
+			    align-items: center;
+			    justify-content: space-around;
+			    transition: all 1.5s;
+			    margin: 1rem;
+			    border: 2px solid #585858;
+			    background-color: #ebebeb;
+			    height: 100px;
+			    width: 100px;
+			}
+			.key h2, .key p{
+				margin-bottom: 0; 
+			}
+			.active{
+			    border: 2px solid #7ecaf6;
+			    font-size: 1.05rem;
+			    width: 105px;
+			    height: 105px;
+			    box-shadow: 0 0 10px #7ecaf6;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<div class="inner">
+
+							<!-- Logo -->
+								<a href="../index.html" class="logo">
+									<span class="symbol"><img src="../images/jfLogo.png" alt="JF logo" /></span><span class="title">Jillian Flook</span>
+								</a>
+
+						</div>
+					</header>
+
+				<!-- Main -->
+					<div id="main">
+						<div class="inner">
+							<h1>Sound Garden</h1>
+							<span class="image main"><img src="../images/pic13.jpg" alt="" /></span>
+						</div>
+						<main class="inner keys">
+							<p>Press any key on your keyboard that coressponds with a letter on the screen to being your sound garden.</p>
+							<div data-key="65" class="key">
+								<h2>A</h2>
+								<p>Long Chime</p>
+							</div>
+							<div data-key="68" class="key">
+								<h2>D</h2>
+								<p>Long Chime 2</p>
+							</div>
+							<div data-key="70" class="key">
+								<h2>F</h2>
+								<p>Md Chime</p>
+							</div>
+							<div data-key="74" class="key">
+								<h2>J</h2>
+								<p>Md Chime 2</p>
+							</div>
+							<div data-key="75" class="key">
+								<h2>K</h2>
+								<p>Short Chime</p>
+							</div>
+						</main>
+					</div>
+					
+				<audio data-key="65" src="http://msh38.ivyro.net/bookphotoshopdata2/motspentten.wav"></audio>
+				<audio data-key="68" src="http://www.sounds.beachware.com/2illionzayp3may/joptlz/CHIMES.mp3"></audio>
+				<audio data-key="70" src="http://www.pelicanbaylighthouseco.com/sounds/sf_bay.wav"></audio>
+				<audio data-key="74" src="http://www.pelicanbaylighthouseco.com/sounds/islandpasture.wav"></audio>
+				<audio data-key="75" src="http://4umi.com/web/sound/star.wav"></audio>
+				<!-- Footer -->
+					<footer id="footer">
+						<div class="inner">
+							<ul class="copyright">
+								<li>&copy; Untitled. All rights reserved</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+							</ul>
+						</div>
+					</footer>
+
+			</div>
+
+		<!-- Scripts -->
+			<!-- <script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/skel.min.js"></script>
+			<script src="assets/js/util.js"></script> -->
+			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+			<!-- <script src="assets/js/main.js"></script> -->
+			
+			<!-- Internal script just for the keyboard -->
+			<script>
+
+				function playChime(e){
+					//tested out the e.key but would require capital and lowercase handeling. code is preferable although may change with specialized keyboards. Letters are generally consistent. 
+					const audio = document.querySelector(`audio[data-key= "${e.keyCode}"]`); //gets the audio file with the matching data-key from the keydown input
+					const key = document.querySelector(`.key[data-key= "${e.keyCode}"]`);  
+					if(!audio) return; //stops if audio is null
+					audio.currentTime = 0; //rewinds sound so can repeatedly hit key with sound effect
+					audio.play();
+					console.log(audio);
+					key.classList.add("active");
+					//console.log(audio); //returns the audio html
+					//console.log(key); //returns the key div from event
+				}
+
+				function removeTransition(e){
+					if(e.propertyName !== "font-size") return //e has 4 seperate events based off of the transition, just looking to target one. Picked font-size but could be others
+					this.classList.remove("active");
+				}
+				
+				const keys = document.querySelectorAll(".key") //ability to get all key-class divs
+				keys.forEach(key => key.addEventListener("transitionend", removeTransition))  //good alternative to setTimeOut incase transition times change, will not get overlapping timeout/transitions
+
+
+				window.addEventListener('keydown', playChime)
+
+			</script>
+
+	</body>
+</html>
+
