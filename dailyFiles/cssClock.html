@@ -1,0 +1,154 @@
+<!DOCTYPE HTML>
+<!--
+	Phantom by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Mini JS- Clock</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+		<link rel="stylesheet" href="../assets/css/main.css" />
+		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+		<style>
+			#clock-contain{
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				height: 400px;
+			}
+
+			#clock-contain h3{
+				padding-top: 2em;
+    			font-size: 1.5em;
+			}
+
+			.clock{
+				width: 250px;
+				height: 250px;
+				background-color: lightpink;
+				border: 15px solid pink;
+				border-radius: 50%;
+			}
+
+			.clock div{
+				width: 50%;
+				height: 5px;
+				background-color: #585858;
+				position: relative;
+				top: 50%;
+				transform-origin: 100%; /*will make the point of transform the far right point. default is middle*/
+				transform: rotate(90deg); /* need this to start at 12:00*/;
+				transition: all 0.2s; 
+				transition-timing-function: ease-in-out; /*create a optional bounce effect. cubic bezier lets you fine tune the effect*/
+			}
+
+			.hand:nth-child(2){
+				top: 48%;
+			}
+			.hand:nth-child(3){
+				top: 46%;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<div class="inner">
+
+							<!-- Logo -->
+								<a href="../index.html" class="logo">
+									<span class="symbol"><img src="../images/jfLogo.png" alt="JF logo" /></span><span class="title">Jillian Flook</span>
+								</a>
+
+						</div>
+					</header>
+
+				<!-- Main -->
+					<main id="main">
+						<div class="inner">
+							<h1>CSS JS Clock</h1>
+							<span class="image main"><img src="../images/pic13.jpg" alt="" /></span>
+						</div>
+						<div id="clock-contain">
+							<div class="clock">
+								<div class="hand" id="sec-hand"></div>
+								<div class="hand" id="min-hand"></div>
+								<div class="hand" id="hr-hand"></div>
+							</div>
+							<h3><span id="hour-text"></span></h3>
+						</div>
+					</main>
+					
+				<!-- Footer -->
+					<footer id="footer">
+						<div class="inner">
+							<ul class="copyright">
+								<li>&copy; Jillian Flook. All rights reserved</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+							</ul>
+						</div>
+					</footer>
+
+			</div>
+
+		<!-- Scripts -->
+			<!-- <script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/skel.min.js"></script>
+			<script src="assets/js/util.js"></script> -->
+			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+			<!-- <script src="assets/js/main.js"></script> -->
+			
+			<!-- Internal script just for the keyboard -->
+			<script>
+
+				const secHand = document.querySelector("#sec-hand");
+				const minHand = document.querySelector("#min-hand");
+				const hrHand = document.querySelector("#hr-hand");
+				const digitalTime = document.querySelector("#hour-text");
+
+				function setTime(){
+					const timeNow = new Date();
+					const seconds = timeNow.getSeconds();
+					const secondsDeg = (seconds/60) * 360 + 90; //need to add 90 bc of transform earlier 
+					secHand.style.transform= `rotate(${secondsDeg}deg)`;
+
+					const minutes = timeNow.getMinutes();
+					const minsDeg = (minutes/60) * 360 + 90;
+					minHand.style.transform= `rotate(${minsDeg}deg)`;
+
+					var hours = timeNow.getHours();
+					if(hours > 12){
+						hours = hours - 12;
+						const hoursDeg = (hours/12) * 360 + 90;
+						hrHand.style.transform= `rotate(${hoursDeg}deg)`;
+					}
+					else{
+						const hoursDeg = (hours/12) * 360 + 90;
+						hrHand.style.transform= `rotate(${hoursDeg}deg)`;
+					}
+					//fix for the jump that occurs on each minute, leaves a jump for one second with out transition effect. 
+					if(seconds === 0){
+						secHand.style.transition="initial";
+					}else if(seconds === 1){
+						secHand.style.transition="all 0.2s ease-in-out";
+					
+					}
+
+					//set the digital clock time 
+					digitalTime.innerHTML = `${hours} : ${minutes} : ${seconds}`;
+
+				}
+
+				setInterval(setTime, 1000) //call setTime function every second;
+
+			</script>
+
+	</body>
+</html>
+
