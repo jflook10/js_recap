@@ -1,0 +1,126 @@
+<!DOCTYPE HTML>
+<!--
+	Phantom by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Mini JS - CSS Variables</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<!--[if lte IE 8]><script src="../assets/js/ie/html5shiv.js"></script><![endif]-->
+		<link rel="stylesheet" href="../assets/css/main.css" />
+		<!--[if lte IE 9]><link rel="stylesheet" href="../assets/css/ie9.css" /><![endif]-->
+		<!--[if lte IE 8]><link rel="stylesheet" href="../assets/css/ie8.css" /><![endif]-->
+	
+	<style>
+		:root{
+			--baseColor:#7ecaf6;
+			--spacing:3%;
+			--blur:10px;
+		}
+		main{
+			display: flex;
+		    flex-direction: column;
+		    align-items: center;
+		}
+		.sliders{
+			display: flex;
+    		justify-content: space-between;
+    		flex-wrap: wrap;
+    		width: 100%;
+		}
+		.sliders input{
+			margin-left: 10px;
+		}
+		#art-contain{
+			margin: 25px;
+			padding: var(--spacing);
+			background-color: var(--baseColor);
+			display: flex;
+		}
+		#art-img{
+			width: 250px;
+			filter: blur(var(--blur));
+			align-self: center;
+		}
+		.highlight{
+			color: var(--baseColor);
+		}
+	</style>
+
+
+
+	</head>
+	<body>
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<div class="inner">
+
+							<!-- Logo -->
+								<a href="index.html" class="logo">
+									<span class="symbol"><img src="../images/jfLogo.png" alt="JF logo" /></span><span class="title">Jillian Flook</span>
+								</a>
+
+						</div>
+					</header>
+
+				<!-- Menu -->
+
+				<!-- Main -->
+					<div id="main">
+						<div class="inner">
+							<h1>Live Update CSS Variables with JS</h1>
+							<span class="image main"><img src="../images/pic13.jpg" alt="" /></span>
+							<main>
+								<div class="sliders">
+									<label for="spacing">Spacing
+									<input type="range" name="spacing" min="0" max="50" value="3" data-sizing="%">
+									</label>
+									<label for="blur">Blur
+									<input type="range" name="blur" min="0" max="25" value="10" data-sizing="px">
+									</label>
+									<label for="baseColor">Base Color
+									<input type="color" name="baseColor" value="#7ecaf6">
+									</label>
+								</div>
+								<div id="art-contain">
+									<img src="https://uploads1.wikiart.org/images/paul-serusier/the-talisman-1888.jpg" alt="Painting, The Tailsman" id="art-img">
+								</div>
+								<h3>The Tailsman, Paul Serusier</h3>
+								<h4>1888, Pont-ave France</h4>
+								<h4>Musée d'Orsay, Paris, France</h4>
+							</main>
+						</div>
+					</div>
+
+				<!-- Footer -->
+					<footer id="footer">
+						<div class="inner">
+							<ul class="copyright">
+								<li>&copy; Jillian Flook. All rights reserved</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+							</ul>
+						</div>
+					</footer>
+
+			</div>
+
+		<!-- Scripts -->
+		<script>
+			const inputs = document.querySelectorAll("input"); //querySelector returns a node list, similar to an array with fewer methods. May need to convert it to array for older browsers...
+
+			function changeInput(){
+				// console.log(this.value);
+				const sizing = this.dataset.sizing || "";  //this captures the input selected and then narrows down to the data-sizing unit if available. 
+				document.documentElement.style.setProperty(`--${this.name}`, this.value + sizing); //reassigns the value of the css style based off of the value on the input element. need to add the sizing const so that the css style has a unit if it needs one. 
+			}
+			inputs.forEach(input => input.addEventListener("change", changeInput));
+			inputs.forEach(input => input.addEventListener("mousemove", changeInput)); 
+		</script>
+
+	</body>
+</html>
