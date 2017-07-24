@@ -1,0 +1,150 @@
+<!DOCTYPE HTML>
+<!--
+	Phantom by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Mini JS- Flex Panels</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+		<link rel="stylesheet" href="../assets/css/main.css" />
+		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+
+		<style>
+			.panel-contain{
+				display: flex;
+				flex-direction: row;
+				height: 100vh;
+			}
+			.panels{
+				flex: 1;
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+    			align-items: center;	
+    			transition: font-size 0.7s ease-in-out,
+    					flex 0.7s ease-in-out,
+    					background 0.2s ease-in-out;
+			}
+
+			.panels > *{
+				flex: 1 0 auto;
+				display: flex;
+			    justify-content: center;
+			    align-items: center;
+			}
+
+			.panels > *:first-child{
+				opacity: 0;
+				transition: opacity 0.5s ease-in-out;
+			}
+			.panels > *:last-child{
+				opacity: 0;
+				transition: opacity 0.5s ease-in-out;
+			}
+			.panels.text-active > *:first-child{
+				opacity: 1;
+			}
+			.panels.text-active > *:last-child{
+				opacity: 1;
+			}
+
+			#panel1{
+				background-image: url("https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/Dante_Gabriel_Rossetti_-_Proserpine_-_Google_Art_Project.jpg/600px-Dante_Gabriel_Rossetti_-_Proserpine_-_Google_Art_Project.jpg");
+			}
+			#panel2{
+				background-image: url("https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/John_Everett_Millais_-_Mariana_-_Google_Art_Project.jpg/1024px-John_Everett_Millais_-_Mariana_-_Google_Art_Project.jpg");
+			}
+			#panel3{
+				background-image: url("https://upload.wikimedia.org/wikipedia/commons/f/f5/Basilpot.jpg");
+			}
+
+			.open{
+				flex: 5;
+				font-size: 30px;
+			}
+			.text-active{
+				visibility: initial;
+				transform: translateY(0);
+			}
+		</style>
+	</head>
+	<body>
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<div class="inner">
+
+							<!-- Logo -->
+								<a href="../index.html" class="logo">
+									<span class="symbol"><img src="../images/jfLogo.png" alt="JF logo" /></span><span class="title">Jillian Flook</span>
+								</a>
+
+						</div>
+					</header>
+
+				<!-- Main -->
+					<div id="main">
+						<div class="inner">
+							<h1>Generic Page</h1>
+							<span class="image main"><img src="../images/pic13.jpg" alt="" /></span>
+						</div>
+						<div class="inner panel-contain">
+							<div class="panels" id="panel1">
+								<h3>Dante Gabriel</h3>
+								<h2>Proserpine </h2>
+								<h3>Rosetti</h3>
+							</div>
+							<div class="panels" id="panel2">
+								<h3>John Everett</h3>
+								<h2>Mariana</h2>
+								<h3>Millais</h3>
+							</div>
+							<div class="panels" id="panel3">
+								<h3>William Holman</h3>
+								<h2>Isabella</h2>
+								<h3>Hunt</h3>
+							</div>
+						</div>
+					</div>
+
+				<!-- Footer -->
+					<footer id="footer">
+						<div class="inner">
+							
+							<ul class="copyright">
+								<li>&copy; Jillian Flook. All rights reserved</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+							</ul>
+						</div>
+					</footer>
+
+			</div>
+
+		<!-- Scripts -->
+		<script>
+			const panels = document.querySelectorAll(".panels")
+
+			function openToggle(){
+				this.classList.toggle("open");
+			}
+
+			function textToggle(e){
+				console.log(e.propertyName);
+				if(e.propertyName.includes("flex")){
+					this.classList.toggle("text-active");
+				} 
+			}
+
+			panels.forEach(panel => panel.addEventListener("click", openToggle));
+			panels.forEach(panel => panel.addEventListener("transitionend", textToggle));
+
+		</script>
+
+	</body>
+</html>
