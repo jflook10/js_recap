@@ -31,6 +31,11 @@
     					background 0.2s ease-in-out;
 			}
 
+			.panels h3, .panels h2{
+				color: #fff;
+				text-align: center;
+			}
+
 			.panels > *{
 				flex: 1 0 auto;
 				display: flex;
@@ -71,6 +76,23 @@
 				visibility: initial;
 				transform: translateY(0);
 			}
+
+			@media screen and (max-width: 768px) {
+				.panel-contain{
+					flex-direction: column;
+				}
+				.panels{
+					background-repeat: no-repeat;
+    				background-size: cover;
+				}
+				.panels h3{
+					font-size: 1rem;
+					margin-bottom: 0;
+				}
+				.panels h2{
+					margin-bottom: 0;
+				}
+			}
 		</style>
 	</head>
 	<body>
@@ -92,8 +114,10 @@
 				<!-- Main -->
 					<div id="main">
 						<div class="inner">
-							<h1>Generic Page</h1>
-							<span class="image main"><img src="../images/pic13.jpg" alt="" /></span>
+							
+							<span class="image main">
+								<h1>Flex Panels</h1>
+							</span>
 						</div>
 						<div class="inner panel-contain">
 							<div class="panels" id="panel1">
@@ -107,6 +131,7 @@
 								<h3>Millais</h3>
 							</div>
 							<div class="panels" id="panel3">
+
 								<h3>William Holman</h3>
 								<h2>Isabella</h2>
 								<h3>Hunt</h3>
@@ -135,7 +160,7 @@
 			}
 
 			function textToggle(e){
-				console.log(e.propertyName);
+				//console.log(e.propertyName);
 				if(e.propertyName.includes("flex")){
 					this.classList.toggle("text-active");
 				} 
