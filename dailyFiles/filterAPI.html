@@ -1,0 +1,112 @@
+<!DOCTYPE HTML>
+<!--
+	Phantom by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Generic - Phantom by HTML5 UP</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+		<link rel="stylesheet" href="../assets/css/main.css" />
+		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+	</head>
+	<body>
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<div class="inner">
+
+							<!-- Logo -->
+								<a href="../index.html" class="logo">
+									<span class="symbol"><img src="../images/jfLogo.png" alt="JF logo" /></span><span class="title">Jillian Flook</span>
+								</a>
+						</div>
+					</header>
+
+				<!-- Main -->
+					<div id="main">
+						<div class="inner">
+							<span class="image main">
+								<h1>Filter Search</h1>
+							</span>
+							<form action="" class="search-form">
+								<input type="text" placeholder="Artist name" class="search-box">
+								<ul class="artist-list"></ul>
+							</form>
+						</div>
+					</div>
+
+				<!-- Footer -->
+					<footer id="footer">
+						<div class="inner">
+							<ul class="copyright">
+								<li>&copy; Jillian Flook. All rights reserved</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+							</ul>
+						</div>
+					</footer>
+
+			</div>
+
+		<!-- Scripts -->
+		<script src="../assets/js/jquery.min.js"></script>
+		<script>
+			$(document).ready(function(){
+
+				/* 
+					//old way is to use ajax with jquery. Now can use fetch(), which is supported by everyone except old IE and Opera Mini. 
+				$.ajax({
+					url: "http://www.philart.net/api/artists.json",
+					method: "GET"
+				}).done(function(response){
+					var data = response.body.list;
+
+					findMatch("Mar", data);
+				})
+				*/
+				const queryURL = "http://www.philart.net/api/artists.json";
+				const artists = []
+				//fetch returns promise, have to tell it to return data/json
+				fetch(queryURL).then(promised => promised.json())
+					.then(data => artists.push(...data.body.list))//use spread to populate artist array
+
+				function findMatch(searchText, artists){
+					//console.log("testing");
+					return artists.filter( searchArtist => {
+						//use regex to see if search text matches array
+						const regex = RegExp(searchText, "gi");
+						//console.log(searchArtist.name.match(regex));
+						return searchArtist.name.match(regex);
+						
+					})
+				};
+
+				function displayMatch(){
+					//this.value is capturing the form input. Then add the user input to the regex comparison in findMatch. 
+					const matchArray = findMatch(this.value, artists);
+					console.log(matchArray);
+					const matchHtml = matchArray.map( searchArtist => {
+						return `
+						<li><p> ${searchArtist.name}</p></li>
+						`;
+					});
+					artistList.innerHTML= matchHtml;
+				}
+
+				const searchInput = document.querySelector(".search-box");
+				const artistList = document.querySelector(".artist-list");
+
+				searchInput.addEventListener("change", displayMatch)
+				searchInput.addEventListener("keyup", displayMatch)
+
+			}) //end of document ready
+
+		</script>	
+
+	</body>
+</html>
