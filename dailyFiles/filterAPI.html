@@ -13,6 +13,20 @@
 		<link rel="stylesheet" href="../assets/css/main.css" />
 		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
 		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+	<style>
+		input.search-box{
+			max-width: 500px;
+    		border: 1px solid lightgrey;
+    		padding: 1rem;
+		}
+		.artist-list > li{
+			margin-left: 1rem;
+		}
+		.highlight-txt{
+			background-color: #ffb2c4;
+		}
+	</style>
+
 	</head>
 	<body>
 		<!-- Wrapper -->
@@ -35,8 +49,9 @@
 							<span class="image main">
 								<h1>Filter Search</h1>
 							</span>
+							<p>Use the search box below to look for artists whose work is publically displayed in Philidelphia. Data is generated from the <a href="http://philart.net/api.html" target="_blank">Philadelphia Public Art API</a>.</p>
 							<form action="" class="search-form">
-								<input type="text" placeholder="Artist name" class="search-box">
+								<input type="text" placeholder="Artist name..." class="search-box">
 								<ul class="artist-list"></ul>
 							</form>
 						</div>
@@ -76,11 +91,9 @@
 					.then(data => artists.push(...data.body.list))//use spread to populate artist array
 
 				function findMatch(searchText, artists){
-					//console.log("testing");
 					return artists.filter( searchArtist => {
 						//use regex to see if search text matches array
-						const regex = RegExp(searchText, "gi");
-						//console.log(searchArtist.name.match(regex));
+						const regex = new RegExp(searchText, "gi"); //searching globally and indescriminant of upper/lower case. 
 						return searchArtist.name.match(regex);
 						
 					})
@@ -89,13 +102,13 @@
 				function displayMatch(){
 					//this.value is capturing the form input. Then add the user input to the regex comparison in findMatch. 
 					const matchArray = findMatch(this.value, artists);
-					console.log(matchArray);
 					const matchHtml = matchArray.map( searchArtist => {
-						return `
-						<li><p> ${searchArtist.name}</p></li>
-						`;
-					});
-					artistList.innerHTML= matchHtml;
+						//using RegExp to highlight text, current issue is that it does not keep the upper/lowercase of the original text. 
+						const regex = new RegExp(this.value, "gi");
+						const highlightTxt = searchArtist.name.replace(regex, `<span class="highlight-txt">${this.value}</span>`);
+						return `<li><p> ${highlightTxt}</p></li>`;
+					}).join(""); //add the join bc map returns an array which adds commas and this returns one string
+					this.value !== "" ? artistList.innerHTML= matchHtml : artistList.innerHTML = "";
 				}
 
 				const searchInput = document.querySelector(".search-box");
