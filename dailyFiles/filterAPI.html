@@ -6,7 +6,7 @@
 -->
 <html>
 	<head>
-		<title>Generic - Phantom by HTML5 UP</title>
+		<title>Mini JS- Filter Search</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
@@ -15,12 +15,19 @@
 		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
 	<style>
 		input.search-box{
-			max-width: 500px;
+			max-width: 400px;
     		border: 1px solid lightgrey;
     		padding: 1rem;
 		}
+		.artist-list {
+			max-width: 400px;
+			padding-left: 1rem;
+			padding-right: 1rem;
+		}
 		.artist-list > li{
-			margin-left: 1rem;
+			display: flex;
+			padding-left: 0;
+			justify-content: space-between;
 		}
 		.highlight-txt{
 			background-color: #ffb2c4;
@@ -49,7 +56,7 @@
 							<span class="image main">
 								<h1>Filter Search</h1>
 							</span>
-							<p>Use the search box below to look for artists whose work is publically displayed in Philidelphia. Data is generated from the <a href="http://philart.net/api.html" target="_blank">Philadelphia Public Art API</a>.</p>
+							<p>Use the search box below to look through an abbreviated list of artists in the Museum of Modern Art collection. Artists from this list come from the DOI 10.5281/zenodo.836923 and a full list can be found on the <a href="https://github.com/MuseumofModernArt/collection">MOMA Github</a>.</p>
 							<form action="" class="search-form">
 								<input type="text" placeholder="Artist name..." class="search-box">
 								<ul class="artist-list"></ul>
@@ -84,17 +91,17 @@
 					findMatch("Mar", data);
 				})
 				*/
-				const queryURL = "https://www.philart.net/api/artists.json";
+				const queryURL = "https://api.myjson.com/bins/pnum1";
 				const artists = []
 				//fetch returns promise, have to tell it to return data/json
 				fetch(queryURL).then(promised => promised.json())
-					.then(data => artists.push(...data.body.list))//use spread to populate artist array
+					.then(data => artists.push(...data))//use spread to populate artist array not technically useful for this case
 
 				function findMatch(searchText, artists){
 					return artists.filter( searchArtist => {
 						//use regex to see if search text matches array
 						const regex = new RegExp(searchText, "gi"); //searching globally and indescriminant of upper/lower case. 
-						return searchArtist.name.match(regex);
+						return searchArtist.DisplayName.match(regex);
 						
 					})
 				};
@@ -105,8 +112,8 @@
 					const matchHtml = matchArray.map( searchArtist => {
 						//using RegExp to highlight text, current issue is that it does not keep the upper/lowercase of the original text. 
 						const regex = new RegExp(this.value, "gi");
-						const highlightTxt = searchArtist.name.replace(regex, `<span class="highlight-txt">${this.value}</span>`);
-						return `<li><p> ${highlightTxt}</p></li>`;
+						const highlightTxt = searchArtist.DisplayName.replace(regex, `<span class="highlight-txt">${this.value}</span>`);
+						return `<li><span>&#8226; ${highlightTxt}</span><span>${searchArtist.Nationality}</span></li>`;
 					}).join(""); //add the join bc map returns an array which adds commas and this returns one string
 					this.value !== "" ? artistList.innerHTML= matchHtml : artistList.innerHTML = "";
 				}
