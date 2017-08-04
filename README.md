@@ -4,7 +4,7 @@ JS_Recap is a small refresher, challenge, and/or exercise focusing on vanilla JS
 
 The site structure is from HTML5 UP... I've been looking for a reason to work with one of the templates because they're pretty, light, clean, and easily customizeable. 
 
-
+To see the project in action, please visit [minijsrecap.herokuapp.com](https://minijsrecap.herokuapp.com/index.html). 
 
 Theme: Phantom by [HTML5 UP](https://html5up.net/)  
 Images: [Unsplash](unsplash.com)  
