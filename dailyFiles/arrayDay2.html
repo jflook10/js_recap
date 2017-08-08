@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Array Cardio</title>
+</head>
+<body>
+  <p><em>Psst: have a look at the JavaScript Console</em></p>
+  <script>
+    // ## Array Cardio Day 2
+    const people = [
+      { name: 'Wes', year: 1988 },
+      { name: 'Kait', year: 1986 },
+      { name: 'Irv', year: 1970 },
+      { name: 'Lux', year: 2015 }
+    ];
+    const comments = [
+      { text: 'Love this!', id: 523423 },
+      { text: 'Super good', id: 823423 },
+      { text: 'You are the best', id: 2039842 },
+      { text: 'Ramen is my fav food ever', id: 123523 },
+      { text: 'Nice Nice Nice!', id: 542328 }
+    ];
+    // Some and Every Checks
+    // Array.prototype.some() // is at least one person 19 or older?
+    const isAdult = people.some(function(person){
+      const currentYear = (new Date()).getFullYear();
+      if(currentYear - person.year >= 19){
+        return true;
+      }
+    });
+
+      /* in ES6, use the implicit return of arrow function as well as evaluating if true */
+      //const isAdult = people.some( person => (new Date()).getFullYear() - person.year >= 19); 
+
+    
+    // Array.prototype.every() // is everyone 19 or older?
+    const allAdult = people.every( person => (new Date()).getFullYear() - person.year >= 19); 
+    console.log({allAdult}) //if you add curly brackets around var, console returns the var as well as the rsp. 
+
+
+    // Array.prototype.find()     
+    // Find is like filter, but instead returns just the first one you are looking for
+    // find the comment with the ID of 823423
+    const comment = comments.find(comment => {
+      if(comment.id === 823423){
+        return true; }
+      });
+
+
+   
+    // Array.prototype.findIndex(), returns the index when true and -1 when false
+    const index = comments.findIndex(comment => comment.id === 823423)
+    const badIndex = comments.findIndex(comment => comment.id === 111)
+    // console.log(badIndex);
+
+
+    // Find the comment with this ID
+    //console.log(comments[index].text)
+    
+    // delete the comment with the ID of 823423
+    comments.splice(index, 1) //at the value of index, remove one item in the array
+
+    const newComment = [
+      ...comments.slice(0, index),
+      ...comments.slice(index + 1)
+    ] //spread items in new array, popular in Redux to create a new array and only copy relevant content. 
+
+    console.table(newComment) //if you add curly brackets around var, console returns the var as well as the rsp. 
+  </script>
+</body>
+</html>
