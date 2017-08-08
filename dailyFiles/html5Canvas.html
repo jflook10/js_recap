@@ -1,0 +1,133 @@
+<!DOCTYPE HTML>
+<!--
+	Phantom by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>HTML5 Canvas</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+		<link rel="stylesheet" href="../assets/css/main.css" />
+		<!--[if lte IE 9]><link rel="stylesheet" href="assets/css/ie9.css" /><![endif]-->
+		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+		<style>
+			#draw{
+				border: 2px solid grey;
+				margin: 2rem;
+				background-color: white;
+				/* width: 100%;
+				height: 100%; NOTE: the canvas will stretch but the mouse events do not properly capture x and y */ 
+			}  
+			#canvas-container{
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				background-color: grey;
+				background-image: url(../images/pic13.jpg);
+				background-size: cover;
+			}
+			#canvas-container p{
+				margin: 5%;
+				color: rgb(88, 88, 88);
+				transition: visibility .3s ease-out, opacity .3s ease-out;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						<div class="inner">
+
+							<!-- Logo -->
+								<a href="../index.html" class="logo">
+									<span class="symbol"><img src="../images/jfLogo.png" alt="JF logo" /></span><span class="title">Jillian Flook</span>
+								</a>
+
+						</div>
+					</header>
+
+				<!-- Main -->
+					<div id="main">
+						<div class="inner" id="innerDiv">
+							<span class="image main">
+								<h1>HTML5 Canvas</h1>
+							</span>
+							<div id="canvas-container">
+								<p>Hold down and move your cursor inside of this canvas to paint. Release the cursor to stop painting.</p>
+								<canvas id="draw" width="300" height="300"></canvas>
+							</div>
+						</div>
+					</div>
+
+				<!-- Footer -->
+					<footer id="footer">
+						<div class="inner">
+							<ul class="copyright">
+								<li>&copy; Jillian Flook. All rights reserved</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+							</ul>
+						</div>
+					</footer>
+			</div>
+	<script>
+		const canvas = document.getElementById("draw");
+		var innerDiv = document.getElementById("canvas-container")
+		const ctx = canvas.getContext("2d"); 
+		let isDrawing = false;
+		let lastX = 0; //holding starting x and y
+		let lastY = 0; 
+		let hue = 0;
+		let direction = true;
+
+		function setCanvas(){
+			canvas.width = innerDiv.clientWidth*.89;
+			canvas.height = innerDiv.clientHeight*.85; //must configure page resize listener
+			ctx.strokeStyle = "#9DCAF5";
+			ctx.lineJoin = "round";
+			ctx.lineCap = "round";
+			ctx.lineWidth = 1;
+			//.globalcompositeOperator effects blending 
+		};
+
+		function draw(e){ //e is the mouse event which has x and y coordinates attached
+			if (!isDrawing) return; 
+			//console.log(e);
+			ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`; //100 opacity and 50 lightness
+			ctx.beginPath();
+			ctx.moveTo(lastX, lastY);
+			ctx.lineTo(e.offsetX, e.offsetY);
+			ctx.stroke();
+			[lastX, lastY] = [e.offsetX, e.offsetY]; //reduce variable assignment to one line w ES6
+
+			hue < 360 ? hue++ : hue = 0;
+			//ctx.lineWidth < 100 ? ctx.lineWidth ++ : ctx.lineWidth  = 1;  
+			if(ctx.lineWidth >=100 || ctx.lineWidth <=1){ 
+				direction = !direction;
+			}
+			direction ? ctx.lineWidth++ : ctx.lineWidth--;
+
+		}
+		window.addEventListener("resize", setCanvas);
+		window.addEventListener("load", setCanvas);
+
+		canvas.addEventListener("mousedown", (e) => {
+			isDrawing = true;
+			[lastX, lastY] = [e.offsetX, e.offsetY];
+			document.querySelector("#canvas-container p").style.visibility = "hidden";
+			document.querySelector("#canvas-container p").style.opacity = "0";
+
+		});
+
+		canvas.addEventListener("mousemove", draw);
+		canvas.addEventListener("mouseup", () => isDrawing = false); //line function, change value of isDrawing while evaluating the draw function and mousemove listener
+		canvas.addEventListener("mouseout", () => isDrawing = false); //need mouseout so listener doesnt get confused if user moves away and it cannot capture an up/down. 
+
+
+	</script>
+	</body>
+</html>
